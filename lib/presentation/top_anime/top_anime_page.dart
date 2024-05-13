@@ -89,13 +89,15 @@ class TopAnimePage extends StatelessWidget {
   }
 
   Widget _successWidget(PagedResponse<Anime> animes) {
+    final animesSorted = animes.data
+      ..sort((a, b) => a.rank!.compareTo(b.rank!));
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: ListView.builder(
         itemCount: animes.data.length,
         itemBuilder: (context, index) {
-          final anime = animes.data[index];
-          return AnimeCard(anime);
+          final anime = animesSorted[index];
+          return AnimeCard(anime, showRank: true);
         },
       ),
     );
