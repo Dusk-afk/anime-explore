@@ -1,7 +1,8 @@
 import 'package:anime_explore/presentation/favorite/favorite_page.dart';
-import 'package:anime_explore/presentation/home/home_page.dart';
+import 'package:anime_explore/presentation/top_anime/top_anime_page.dart';
 import 'package:anime_explore/presentation/search/search_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
 class MainPage extends StatefulWidget {
@@ -16,33 +17,30 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return PlatformScaffold(
-      appBar: PlatformAppBar(
-        title: const Text('Flutter Demo'),
-        trailingActions: [
-          PlatformIconButton(
-            icon: const Icon(Icons.search),
-            onPressed: () {},
-          ),
-        ],
-      ),
+    return Scaffold(
       body: Column(
         children: [
-          const SizedBox(height: 100),
           Expanded(child: _bodyWidget()),
-          PlatformNavBar(
+          BottomNavigationBar(
             currentIndex: _selectedPage,
-            itemChanged: (value) {
+            onTap: (value) {
               setState(() {
                 _selectedPage = value;
               });
             },
             items: const [
-              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.search), label: 'Search'),
+                icon: Icon(Icons.explore),
+                label: 'Top',
+              ),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.favorite_rounded), label: 'Favouites'),
+                icon: Icon(Icons.search),
+                label: 'Search',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.favorite_rounded),
+                label: 'Favouites',
+              ),
             ],
           )
         ],
@@ -50,16 +48,31 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
-  Widget _bodyWidget() {
+  String _title() {
     switch (_selectedPage) {
       case 0:
-        return const HomePage();
+        return 'Home';
+      case 1:
+        return 'Search';
+      case 2:
+        return 'Favorites';
+      default:
+        return 'Home';
+    }
+  }
+
+  Widget _bodyWidget() {
+    switch (_selectedPage) {
       case 1:
         return const SearchPage();
       case 2:
         return const FavoritePage();
       default:
-        return const HomePage();
+        return TopAnimePage(onSearch: () {
+          setState(() {
+            _selectedPage = 1;
+          });
+        });
     }
   }
 }
