@@ -131,7 +131,7 @@ class AnimePage extends StatelessWidget {
         double width = constraints.maxWidth * 0.75;
         return Center(
           child: TextButton(
-            onPressed: _openTrailer,
+            onPressed: () => _openTrailer(context),
             style: ButtonStyle(
               padding: MaterialStateProperty.all(EdgeInsets.zero),
               minimumSize: MaterialStateProperty.all(Size.zero),
@@ -227,12 +227,27 @@ class AnimePage extends StatelessWidget {
     );
   }
 
-  void _openTrailer() async {
+  void _openTrailer(BuildContext context) async {
     final String? youtubeUrl = anime.trailer.url;
     if (youtubeUrl != null && youtubeUrl.isNotEmpty) {
       final Uri uri = Uri.parse(youtubeUrl);
       if (await canLaunchUrl(uri)) {
         await launchUrl(uri, mode: LaunchMode.externalApplication);
+      } else {
+        // ignore: use_build_context_synchronously
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text(
+                "Failed to detect any supported application to open the trailer."),
+            duration: const Duration(seconds: 5),
+            action: anime.trailer.url != null
+                ? SnackBarAction(
+                    label: "Share Link",
+                    onPressed: _shareTrailer,
+                  )
+                : null,
+          ),
+        );
       }
     }
   }
@@ -240,11 +255,16 @@ class AnimePage extends StatelessWidget {
   void _share() {
     Share.shareUri(Uri.parse(anime.url));
   }
+
+  void _shareTrailer() {
+    if (anime.trailer.url == null) return;
+    Share.shareUri(Uri.parse(anime.trailer.url!));
+  }
 }
 
 class _TableInfo extends StatelessWidget {
   final Anime anime;
-  const _TableInfo(this.anime, {super.key});
+  const _TableInfo(this.anime);
 
   @override
   Widget build(BuildContext context) {
@@ -291,7 +311,7 @@ class _TableInfo extends StatelessWidget {
 
 class _Synopsis extends StatefulWidget {
   final String synopsis;
-  const _Synopsis(this.synopsis, {super.key});
+  const _Synopsis(this.synopsis);
 
   @override
   State<_Synopsis> createState() => __SynopsisState();

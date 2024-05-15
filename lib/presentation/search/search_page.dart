@@ -230,6 +230,7 @@ class _SearchPageState extends State<SearchPage>
     }
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent * 0.9) {
+      // ignore: use_build_context_synchronously
       innerContext.read<AnimeSearchBloc>().add(AnimeSearchNextPage());
     }
   }

@@ -25,6 +25,24 @@ class _MainPageState extends State<MainPage> {
           activeColor: Theme.of(context).primaryColor,
           inactiveColor: Theme.of(context).unselectedWidgetColor,
         ),
+        material3: (context, platform) => MaterialNavigationBarData(items: [
+          const NavigationDestination(
+            icon: Icon(Icons.explore),
+            selectedIcon: Icon(
+              Icons.explore,
+              color: TColors.white,
+            ),
+            label: 'Top',
+          ),
+          const NavigationDestination(
+            icon: Icon(Icons.search),
+            selectedIcon: Icon(
+              Icons.search,
+              color: TColors.white,
+            ),
+            label: 'Search',
+          ),
+        ]),
         itemChanged: _changePage,
         items: const [
           BottomNavigationBarItem(

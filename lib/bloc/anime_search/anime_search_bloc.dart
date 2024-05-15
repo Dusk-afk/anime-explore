@@ -2,6 +2,7 @@ import 'package:anime_explore/models/anime.dart';
 import 'package:anime_explore/models/anime_search_args.dart';
 import 'package:anime_explore/models/paged_response.dart';
 import 'package:anime_explore/services/jikan_service/jikan_service.dart';
+// ignore: depend_on_referenced_packages
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 

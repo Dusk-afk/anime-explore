@@ -3,7 +3,6 @@ import 'package:anime_explore/presentation/anime/anime_page.dart';
 import 'package:anime_explore/utils/constants/colors.dart';
 import 'package:anime_explore/utils/constants/sizes.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
