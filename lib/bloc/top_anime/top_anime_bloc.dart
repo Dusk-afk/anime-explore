@@ -13,6 +13,9 @@ class TopAnimeBloc extends Bloc<TopAnimeEvent, TopAnimeState> {
     on<TopAnimeCall>(_onTopAnimeCalled);
   }
 
+  /// Handles the [TopAnimeCall] event.
+  ///
+  /// Fetches the top anime from the Jikan API.
   Future<void> _onTopAnimeCalled(TopAnimeCall event, emit) async {
     emit(TopAnimeLoading());
     try {

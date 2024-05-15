@@ -1,3 +1,12 @@
+/// PagedResponse is a generic class that represents a response from the API that contains a list of items.
+///
+/// It contains the following properties:
+/// - [data] is the list of items.
+/// - [lastVisiblePage] is the last visible page.
+/// - [hasNextPage] is a boolean that indicates if there is a next page.
+/// - [count] is the number of items in the current page.
+/// - [total] is the total number of items.
+/// - [perPage] is the number of items per page.
 class PagedResponse<T> {
   final List<T> data;
   final int lastVisiblePage;
@@ -26,6 +35,9 @@ class PagedResponse<T> {
     );
   }
 
+  /// Returns a new [PagedResponse] with the given [data].
+  ///
+  /// This method is useful when you want to update the data of the [PagedResponse].
   operator +(PagedResponse<T> other) => PagedResponse(
         data: [...data, ...other.data],
         lastVisiblePage: other.lastVisiblePage,

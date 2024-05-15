@@ -4,6 +4,15 @@ import 'package:anime_explore/models/anime_sort_enum.dart';
 import 'package:anime_explore/models/anime_type_enum.dart';
 import 'package:anime_explore/models/wrappeed.dart';
 
+/// Arguments for searching anime.
+///
+/// [query] is the search query.
+/// [page] is the page number.
+/// [perPage] is the number of items per page.
+/// [type] is the type of anime.
+/// [rating] is the rating of anime.
+/// [orderBy] is the order by field.
+/// [sort] is the sort field.
 class AnimeSearchArgs {
   final String query;
   final int page;

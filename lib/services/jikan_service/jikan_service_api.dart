@@ -16,6 +16,7 @@ class JikanServiceApi implements JikanService {
     ),
   )..interceptors.add(ErrorInterceptor());
 
+  /// Fetches the anime search results from the Jikan API.
   @override
   Future<PagedResponse<Anime>> getAnimeSearch(AnimeSearchArgs args) async {
     final response = await _api.get(
@@ -40,6 +41,7 @@ class JikanServiceApi implements JikanService {
     return PagedResponse.fromJson(animes, pagination);
   }
 
+  /// Fetches the top anime from the Jikan API.
   @override
   Future<PagedResponse<Anime>> getTopAnime() async {
     final response = await _api.get('/top/anime');

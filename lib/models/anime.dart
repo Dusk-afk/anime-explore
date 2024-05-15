@@ -2,6 +2,7 @@ import 'package:anime_explore/models/anime_image.dart';
 import 'package:anime_explore/models/anime_entity.dart';
 import 'package:anime_explore/models/anime_trailer.dart';
 
+/// Represents an anime.
 class Anime {
   final int malId;
   final String url;

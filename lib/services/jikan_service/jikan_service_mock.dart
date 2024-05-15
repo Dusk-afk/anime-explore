@@ -7,11 +7,12 @@ class JikanServiceMock implements JikanService {
   @override
   Future<PagedResponse<Anime>> getAnimeSearch(AnimeSearchArgs args) async {
     await Future.delayed(const Duration(seconds: 2));
-    throw UnimplementedError();
+    throw Exception("Failed to fetch anime search results");
   }
 
   @override
   Future<PagedResponse<Anime>> getTopAnime() async {
-    throw UnimplementedError();
+    await Future.delayed(const Duration(seconds: 2));
+    throw Exception("Failed to fetch anime search results");
   }
 }
