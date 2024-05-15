@@ -29,6 +29,7 @@ class _SearchPageState extends State<SearchPage>
   final _focusNode = FocusNode();
   final _queryController = TextEditingController();
   AnimeSearchArgs _args = AnimeSearchArgs(query: '');
+  late final String _suggestion = _getAnimeSuggestion();
 
   late BuildContext innerContext = context;
 
@@ -86,7 +87,7 @@ class _SearchPageState extends State<SearchPage>
                           child: Row(
                             children: [
                               Expanded(
-                                child: CustomTextField(
+                                child: CustomSearchBar(
                                   focusNode: _focusNode,
                                   controller: _queryController,
                                   onChanged: (q) => _onSearch(context, q),
@@ -121,12 +122,27 @@ class _SearchPageState extends State<SearchPage>
   Widget _body() {
     return BlocBuilder<AnimeSearchBloc, AnimeSearchState>(
       builder: (context, state) {
-        if (state is AnimeSearchInitial) return const SizedBox();
+        if (state is AnimeSearchInitial) return _initialWidget();
         if (state is AnimeSearchLoading) return _loadingWidget();
         if (state is AnimeSearchError) return _errorWidget(state.message);
         if (state is AnimeSearchSuccess) return _successWidget(state.animes);
         return const SizedBox();
       },
+    );
+  }
+
+  Widget _initialWidget() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 100),
+      child: Center(
+        child: Text(
+          'Try "$_suggestion"',
+          style: const TextStyle(
+            color: TColors.darkGrey,
+            fontSize: TSizes.fontSizeLg,
+          ),
+        ),
+      ),
     );
   }
 
@@ -173,6 +189,21 @@ class _SearchPageState extends State<SearchPage>
   }
 
   Widget _successWidget(PagedResponse<Anime> animes) {
+    if (animes.data.isEmpty) {
+      return const Padding(
+        padding: EdgeInsets.only(top: 100),
+        child: Center(
+          child: Text(
+            "No results found",
+            style: TextStyle(
+              color: TColors.white,
+              fontSize: TSizes.fontSizeLg,
+            ),
+          ),
+        ),
+      );
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
       child: ListView.builder(
@@ -193,6 +224,24 @@ class _SearchPageState extends State<SearchPage>
         },
       ),
     );
+  }
+
+  String _getAnimeSuggestion() {
+    List<String> suggestions = [
+      "Attack on Titan",
+      "One Piece",
+      "Naruto",
+      "Death Note",
+      "My Hero Academia",
+      "Demon Slayer",
+      "Tokyo Revengers",
+      "Jujutsu Kaisen",
+      "Dragon Ball",
+      "Black Clover",
+      "Bleach"
+    ];
+
+    return suggestions[DateTime.now().second % suggestions.length];
   }
 
   void _onFilterPressed() async {

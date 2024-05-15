@@ -1,13 +1,13 @@
 import 'package:anime_explore/utils/constants/colors.dart';
 import 'package:flutter/material.dart';
 
-class CustomTextField extends StatelessWidget {
+class CustomSearchBar extends StatelessWidget {
   final FocusNode? focusNode;
   final TextEditingController? controller;
   final String? hintText;
   final ValueChanged<String>? onChanged;
 
-  const CustomTextField({
+  const CustomSearchBar({
     super.key,
     this.focusNode,
     this.controller,
