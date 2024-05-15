@@ -1,8 +1,11 @@
+import 'dart:ui';
+
 import 'package:anime_explore/bloc/top_anime/top_anime_bloc.dart';
 import 'package:anime_explore/models/anime.dart';
 import 'package:anime_explore/models/paged_response.dart';
 import 'package:anime_explore/presentation/anime/anime_card.dart';
 import 'package:anime_explore/presentation/anime/anime_card_shimmer.dart';
+import 'package:anime_explore/utils/constants/colors.dart';
 import 'package:anime_explore/utils/constants/sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,15 +27,25 @@ class _TopAnimePageState extends State<TopAnimePage>
     return BlocProvider(
       create: (context) => TopAnimeBloc()..add(TopAnimeCall()),
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            "Top Anime",
-            style: TextStyle(
-              fontFamily: "Manga",
-              fontSize: TSizes.fontSizeXxl,
+        appBar: PreferredSize(
+          preferredSize: Size(MediaQuery.of(context).size.width, 56),
+          child: ClipRRect(
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+              child: AppBar(
+                backgroundColor: TColors.darkBlack.withOpacity(0.4),
+                title: const Text(
+                  "Top Anime",
+                  style: TextStyle(
+                    fontFamily: "Manga",
+                    fontSize: TSizes.fontSizeXxl,
+                  ),
+                ),
+              ),
             ),
           ),
         ),
+        extendBodyBehindAppBar: true,
         body: _body(),
       ),
     );
@@ -95,7 +108,7 @@ class _TopAnimePageState extends State<TopAnimePage>
     final animesSorted = animes.data
       ..sort((a, b) => a.rank!.compareTo(b.rank!));
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
       child: ListView.builder(
         itemCount: animes.data.length,
         itemBuilder: (context, index) {

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:anime_explore/bloc/anime_search/anime_search_bloc.dart';
 import 'package:anime_explore/models/anime.dart';
 import 'package:anime_explore/models/anime_search_args.dart';
@@ -62,45 +64,53 @@ class _SearchPageState extends State<SearchPage>
               _focusNode.unfocus();
             },
             child: Scaffold(
-              appBar: AppBar(
-                title: const Text(
-                  "Search",
-                  style: TextStyle(
-                    fontFamily: "Manga",
-                    fontSize: TSizes.fontSizeXxl,
+              appBar: PreferredSize(
+                preferredSize: Size(MediaQuery.of(context).size.width, 110),
+                child: ClipRRect(
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                    child: AppBar(
+                      backgroundColor: TColors.darkBlack.withOpacity(0.8),
+                      title: const Text(
+                        "Search",
+                        style: TextStyle(
+                          fontFamily: "Manga",
+                          fontSize: TSizes.fontSizeXxl,
+                        ),
+                      ),
+                      bottom: PreferredSize(
+                        preferredSize:
+                            Size(MediaQuery.of(context).size.width, 56),
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: CustomTextField(
+                                  focusNode: _focusNode,
+                                  controller: _queryController,
+                                  onChanged: (q) => _onSearch(context, q),
+                                  hintText: "Search",
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              PlatformIconButton(
+                                onPressed: _onFilterPressed,
+                                icon: const Icon(
+                                  Icons.filter_list,
+                                  color: TColors.white,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               ),
-              body: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: CustomTextField(
-                            focusNode: _focusNode,
-                            controller: _queryController,
-                            onChanged: (q) => _onSearch(context, q),
-                            hintText: "Search",
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        PlatformIconButton(
-                          onPressed: _onFilterPressed,
-                          icon: const Icon(
-                            Icons.filter_list,
-                            color: TColors.white,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: _body(),
-                  ),
-                ],
-              ),
+              extendBodyBehindAppBar: true,
+              body: _body(),
             ),
           );
         },
@@ -164,7 +174,7 @@ class _SearchPageState extends State<SearchPage>
 
   Widget _successWidget(PagedResponse<Anime> animes) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
       child: ListView.builder(
         controller: _scrollController,
         itemCount: animes.data.length,
@@ -175,6 +185,7 @@ class _SearchPageState extends State<SearchPage>
               children: [
                 AnimeCard(anime),
                 if (animes.hasNextPage) PlatformCircularProgressIndicator(),
+                const SizedBox(height: 20),
               ],
             );
           }

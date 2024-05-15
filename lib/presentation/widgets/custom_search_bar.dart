@@ -30,6 +30,7 @@ class CustomTextField extends StatelessWidget {
           decoration: InputDecoration(
             hintText: hintText,
             contentPadding: const EdgeInsets.only(left: 30),
+            fillColor: TColors.darkerGrey,
           ),
         ),
         const Positioned(
