@@ -210,6 +210,7 @@ class _SearchPageState extends State<SearchPage>
   }
 
   void _scrollControllerListener() async {
+    FocusScope.of(context).unfocus();
     _lastScrolled = DateTime.now();
     await Future.delayed(const Duration(milliseconds: 500));
     if (DateTime.now().difference(_lastScrolled) <

@@ -57,6 +57,9 @@ class _MainPageState extends State<MainPage> {
   }
 
   void _changePage(int page) {
+    if (page != 1) {
+      FocusScope.of(context).unfocus();
+    }
     setState(() {
       _selectedPage = page;
     });
