@@ -1,3 +1,4 @@
+![Flutter](https://img.shields.io/badge/Flutter-%2302569B.svg?style=for-the-badge&logo=Flutter&logoColor=white)
 # Anime Explore
 Anime Explore is a versatile application designed for effortlessly searching, exploring, and enjoying your favorite anime titles. 
 
@@ -17,6 +18,9 @@ Explore, discover, and immerse yourself in the vibrant world of anime with Anime
   <img src="./assets/screenshots/4.png" width="200" height="400" />
   <img src="./assets/screenshots/5.png" width="200" height="400" />
 </p>
+
+https://github.com/Dusk-afk/anime-explore/assets/83510709/1baa3a64-1e41-479a-ac7e-f3d436d2ac5d
+
 
 ## Getting Started
 1. Clone the repo in your local environment
