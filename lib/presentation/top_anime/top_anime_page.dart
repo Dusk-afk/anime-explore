@@ -3,7 +3,6 @@ import 'package:anime_explore/models/anime.dart';
 import 'package:anime_explore/models/paged_response.dart';
 import 'package:anime_explore/presentation/anime/anime_card.dart';
 import 'package:anime_explore/presentation/anime/anime_card_shimmer.dart';
-import 'package:anime_explore/utils/constants/colors.dart';
 import 'package:anime_explore/utils/constants/sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

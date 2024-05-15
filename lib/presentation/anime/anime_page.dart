@@ -232,7 +232,7 @@ class AnimePage extends StatelessWidget {
     if (youtubeUrl != null && youtubeUrl.isNotEmpty) {
       final Uri uri = Uri.parse(youtubeUrl);
       if (await canLaunchUrl(uri)) {
-        await launchUrl(uri);
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
       }
     }
   }

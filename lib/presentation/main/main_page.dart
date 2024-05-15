@@ -1,5 +1,6 @@
 import 'package:anime_explore/presentation/top_anime/top_anime_page.dart';
 import 'package:anime_explore/presentation/search/search_page.dart';
+import 'package:anime_explore/utils/constants/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
@@ -17,42 +18,28 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: PlatformNavBar(
+        currentIndex: _selectedPage,
+        cupertino: (context, platform) => CupertinoTabBarData(
+          backgroundColor: TColors.black,
+          activeColor: Theme.of(context).primaryColor,
+          inactiveColor: Theme.of(context).unselectedWidgetColor,
+        ),
+        itemChanged: _changePage,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.explore),
+            label: 'Top',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: 'Search',
+          ),
+        ],
+      ),
       body: Column(
         children: [
           Expanded(child: _bodyWidget()),
-          PlatformNavBar(
-            currentIndex: _selectedPage,
-            cupertino: (context, platform) => CupertinoTabBarData(
-              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-              activeColor: Theme.of(context).primaryColor,
-              inactiveColor: Theme.of(context).unselectedWidgetColor,
-            ),
-            itemChanged: _changePage,
-            items: const [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.explore),
-                label: 'Top',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.search),
-                label: 'Search',
-              ),
-            ],
-          ),
-          // BottomNavigationBar(
-          //   currentIndex: _selectedPage,
-          //   onTap: _changePage,
-          //   items: const [
-          //     BottomNavigationBarItem(
-          //       icon: Icon(Icons.explore),
-          //       label: 'Top',
-          //     ),
-          //     BottomNavigationBarItem(
-          //       icon: Icon(Icons.search),
-          //       label: 'Search',
-          //     ),
-          //   ],
-          // )
         ],
       ),
     );
@@ -60,6 +47,7 @@ class _MainPageState extends State<MainPage> {
 
   Widget _bodyWidget() {
     return PageView(
+      physics: const NeverScrollableScrollPhysics(),
       controller: _pageController,
       children: const [
         TopAnimePage(),
