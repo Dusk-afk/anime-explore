@@ -69,6 +69,12 @@ class _TopAnimePageState extends State<TopAnimePage>
       child: ListView.builder(
         itemCount: 4,
         itemBuilder: (context, index) {
+          if (index == 0) {
+            return Container(
+              margin: const EdgeInsets.only(top: 22),
+              child: const AnimeCardShimmer(),
+            );
+          }
           return const AnimeCardShimmer();
         },
       ),
