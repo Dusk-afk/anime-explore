@@ -65,7 +65,7 @@ class AnimeCard extends StatelessWidget {
                               ),
                             ),
                           TextSpan(
-                            text: anime.title,
+                            text: anime.titleEnglish ?? anime.title,
                             style: const TextStyle(
                               fontSize: TSizes.fontSizeLg,
                               fontWeight: FontWeight.bold,

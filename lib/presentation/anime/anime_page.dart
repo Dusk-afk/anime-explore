@@ -65,7 +65,7 @@ class AnimePage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      anime.title,
+                      anime.titleEnglish ?? anime.title,
                       style: const TextStyle(
                         fontFamily: "Manga",
                         fontSize: 38,

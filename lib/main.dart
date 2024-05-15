@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
     return CupertinoTheme(
       data: TCupertinoTheme.darkTheme,
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         darkTheme: TAppTheme.darkTheme,
         themeMode: ThemeMode.dark,
