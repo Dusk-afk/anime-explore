@@ -1,5 +1,7 @@
 import 'package:anime_explore/presentation/main/main_page.dart';
+import 'package:anime_explore/utils/theme/cupertino_theme.dart';
 import 'package:anime_explore/utils/theme/theme.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -11,13 +13,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      darkTheme: TAppTheme.darkTheme,
-      themeMode: ThemeMode.dark,
-      routes: {
-        '/': (context) => const MainPage(),
-      },
+    return CupertinoTheme(
+      data: TCupertinoTheme.darkTheme,
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        darkTheme: TAppTheme.darkTheme,
+        themeMode: ThemeMode.dark,
+        routes: {
+          '/': (context) => const MainPage(),
+        },
+      ),
     );
   }
 }

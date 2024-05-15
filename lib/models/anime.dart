@@ -10,17 +10,18 @@ class Anime {
   final String title;
   final String? titleEnglish;
   final String? titleJapanese;
+  final String type;
   final int episodes;
   final String status;
   final String duration;
-  final String rating;
+  final String? rating;
   final double? score;
   final int? scoredBy;
   final int? rank;
   final int popularity;
   final int members;
   final int favorites;
-  final String synopsis;
+  final String? synopsis;
   final String? season;
   final int? year;
   final List<AnimeEntity> producers;
@@ -39,6 +40,7 @@ class Anime {
     required this.title,
     required this.titleEnglish,
     required this.titleJapanese,
+    required this.type,
     required this.episodes,
     required this.status,
     required this.duration,
@@ -70,6 +72,7 @@ class Anime {
       title: json['title'],
       titleEnglish: json['title_english'],
       titleJapanese: json['title_japanese'],
+      type: json['type'],
       episodes: json['episodes'],
       status: json['status'],
       duration: json['duration'],

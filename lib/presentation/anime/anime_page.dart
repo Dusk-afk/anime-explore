@@ -3,6 +3,7 @@ import 'package:anime_explore/utils/constants/colors.dart';
 import 'package:anime_explore/utils/constants/sizes.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -18,6 +19,12 @@ class AnimePage extends StatelessWidget {
         surfaceTintColor: TColors.darkBlack,
         shadowColor: TColors.darkBlack,
         scrolledUnderElevation: 1,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.adaptive.share),
+            onPressed: _share,
+          ),
+        ],
       ),
       extendBodyBehindAppBar: true,
       body: Stack(
@@ -86,32 +93,25 @@ class AnimePage extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
+                      anime.type,
+                      style: const TextStyle(
+                        color: TColors.grey,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
                       anime.genres.map((e) => e.name).join(", "),
                       style: const TextStyle(
                         fontSize: TSizes.fontSizeMd,
                         color: TColors.grey,
                       ),
                     ),
-                    const SizedBox(height: 4),
-                    Text(
-                      "Episodes: ${anime.episodes}",
-                      style: const TextStyle(
-                        fontSize: TSizes.fontSizeMd,
-                        color: TColors.grey,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      "Duration: ${anime.duration}",
-                      style: const TextStyle(
-                        fontSize: TSizes.fontSizeMd,
-                        color: TColors.grey,
-                      ),
-                    ),
+                    const SizedBox(height: 10),
+                    _TableInfo(anime),
                     const SizedBox(height: 10),
                     const Divider(color: TColors.grey),
                     const SizedBox(height: 10),
-                    _Synopsis(anime.synopsis),
+                    _Synopsis(anime.synopsis ?? ""),
                     const SizedBox(height: 10),
                     const Divider(color: TColors.grey),
                     const SizedBox(height: 10),
@@ -155,13 +155,7 @@ class AnimePage extends StatelessWidget {
                   children: [
                     Hero(
                       tag: anime.malId,
-                      child: CachedNetworkImage(
-                        imageUrl: anime.image.largeImageUrl,
-                        width: width,
-                        height: width,
-                        fit: BoxFit.cover,
-                        placeholder: (context, url) => _imageShimmer(),
-                      ),
+                      child: _image(width),
                     ),
                     if (anime.trailer.url != null &&
                         anime.trailer.url!.isNotEmpty)
@@ -203,6 +197,24 @@ class AnimePage extends StatelessWidget {
     );
   }
 
+  Widget _image(double size) {
+    // Load full image if available
+    // Otherwise, load the smaller image
+    // If the smaller image is not available, show a shimmer
+    return CachedNetworkImage(
+      imageUrl: anime.image.largeImageUrl,
+      width: size,
+      height: size,
+      fit: BoxFit.cover,
+      placeholder: (context, url) => CachedNetworkImage(
+        imageUrl: anime.image.imageUrl,
+        width: size,
+        height: size,
+        placeholder: (context, url) => _imageShimmer(),
+      ),
+    );
+  }
+
   Widget _imageShimmer() {
     return Shimmer.fromColors(
       baseColor: TColors.darkBlack,
@@ -223,6 +235,57 @@ class AnimePage extends StatelessWidget {
         await launchUrl(uri);
       }
     }
+  }
+
+  void _share() {
+    Share.shareUri(Uri.parse(anime.url));
+  }
+}
+
+class _TableInfo extends StatelessWidget {
+  final Anime anime;
+  const _TableInfo(this.anime, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    List<List<String>> data = [
+      ["Status", anime.status],
+      ["Episodes", anime.episodes.toString()],
+      ["Duration", anime.duration],
+      ["Rating", anime.rating ?? "-"],
+      ["Studios", anime.studios.map((e) => e.name).join(", ")],
+      ["Producers", anime.producers.map((e) => e.name).join(", ")],
+      ["Licensors", anime.licensors.map((e) => e.name).join(", ")],
+    ];
+
+    return Container(
+      decoration: BoxDecoration(
+        color: TColors.black,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: Column(
+          children: [
+            for (int i = 0; i < data.length; i++)
+              _card(data[i][0], data[i][1], i),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _card(String key, String value, int i) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
+      decoration: BoxDecoration(
+        color: i % 2 == 0 ? TColors.black : TColors.darkBlack,
+      ),
+      child: Row(children: [
+        Expanded(flex: 1, child: Text(key)),
+        Expanded(flex: 3, child: Text(value)),
+      ]),
+    );
   }
 }
 

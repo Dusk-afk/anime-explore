@@ -4,6 +4,8 @@ import 'package:anime_explore/models/anime_search_args.dart';
 import 'package:anime_explore/models/paged_response.dart';
 import 'package:anime_explore/presentation/anime/anime_card.dart';
 import 'package:anime_explore/presentation/anime/anime_card_shimmer.dart';
+import 'package:anime_explore/presentation/search/filter_search_dialog.dart';
+import 'package:anime_explore/presentation/widgets/custom_search_bar.dart';
 import 'package:anime_explore/utils/constants/colors.dart';
 import 'package:anime_explore/utils/constants/sizes.dart';
 import 'package:flutter/material.dart';
@@ -17,14 +19,16 @@ class SearchPage extends StatefulWidget {
   State<SearchPage> createState() => _SearchPageState();
 }
 
-class _SearchPageState extends State<SearchPage> {
+class _SearchPageState extends State<SearchPage>
+    with AutomaticKeepAliveClientMixin {
   DateTime _lastTyped = DateTime.now();
   DateTime _lastScrolled = DateTime.now();
   final _scrollController = ScrollController();
   final _focusNode = FocusNode();
   final _queryController = TextEditingController();
+  AnimeSearchArgs _args = AnimeSearchArgs(query: '');
 
-  late BuildContext context = context;
+  late BuildContext innerContext = context;
 
   @override
   void initState() {
@@ -46,38 +50,57 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return BlocProvider(
       create: (context) => AnimeSearchBloc(),
       child: Builder(
         builder: (context) {
-          this.context = context;
-          return Scaffold(
-            appBar: AppBar(
-              title: const Text(
-                "Search",
-                style: TextStyle(
-                  fontFamily: "Manga",
-                  fontSize: TSizes.fontSizeXxl,
-                ),
-              ),
-            ),
-            body: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: PlatformSearchBar(
-                    focusNode: _focusNode,
-                    controller: _queryController,
-                    onChanged: (q) => _onSearch(context, q),
-                    textStyle: const TextStyle(
-                      color: TColors.white,
-                    ),
+          innerContext = context;
+          return GestureDetector(
+            onTap: () {
+              _focusNode.unfocus();
+            },
+            child: Scaffold(
+              appBar: AppBar(
+                title: const Text(
+                  "Search",
+                  style: TextStyle(
+                    fontFamily: "Manga",
+                    fontSize: TSizes.fontSizeXxl,
                   ),
                 ),
-                Expanded(
-                  child: _body(),
-                ),
-              ],
+              ),
+              body: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: CustomTextField(
+                            focusNode: _focusNode,
+                            controller: _queryController,
+                            onChanged: (q) => _onSearch(context, q),
+                            hintText: "Search",
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        PlatformIconButton(
+                          onPressed: _onFilterPressed,
+                          icon: const Icon(
+                            Icons.filter_list,
+                            color: TColors.white,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: _body(),
+                  ),
+                ],
+              ),
             ),
           );
         },
@@ -125,11 +148,12 @@ class _SearchPageState extends State<SearchPage> {
             const SizedBox(height: 10),
             Text(message),
             const SizedBox(height: 10),
-            ElevatedButton(
+            PlatformElevatedButton(
               onPressed: () {
                 final args = AnimeSearchArgs(query: _queryController.text);
-                context.read<AnimeSearchBloc>().add(AnimeSearchCall(args));
+                innerContext.read<AnimeSearchBloc>().add(AnimeSearchCall(args));
               },
+              color: Theme.of(context).primaryColor,
               child: const Text("Retry"),
             ),
           ],
@@ -160,14 +184,29 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 
+  void _onFilterPressed() async {
+    final AnimeSearchArgs? args = await showDialog(
+      context: context,
+      builder: (context) => FilterSearchDialog(args: _args),
+    );
+    if (args != null) {
+      _args = args;
+      _search();
+    }
+  }
+
   void _onSearch(BuildContext context, String query) async {
     const Duration typingDuration = Duration(milliseconds: 500);
     _lastTyped = DateTime.now();
     await Future.delayed(typingDuration);
     if (DateTime.now().difference(_lastTyped) >= typingDuration) {
-      final args = AnimeSearchArgs(query: query);
-      context.read<AnimeSearchBloc>().add(AnimeSearchCall(args));
+      _args = _args.copyWith(query: query);
+      _search();
     }
+  }
+
+  void _search() {
+    innerContext.read<AnimeSearchBloc>().add(AnimeSearchCall(_args));
   }
 
   void _scrollControllerListener() async {
@@ -179,7 +218,10 @@ class _SearchPageState extends State<SearchPage> {
     }
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent * 0.9) {
-      context.read<AnimeSearchBloc>().add(AnimeSearchNextPage());
+      innerContext.read<AnimeSearchBloc>().add(AnimeSearchNextPage());
     }
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

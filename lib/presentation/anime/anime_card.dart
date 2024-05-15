@@ -76,14 +76,18 @@ class AnimeCard extends StatelessWidget {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    Text(
+                      anime.type,
+                      style: const TextStyle(color: TColors.grey),
+                    ),
                     Row(
                       children: [
                         const Icon(
                           Icons.star,
                           color: Colors.yellow,
+                          size: TSizes.iconSm,
                         ),
-                        const SizedBox(width: 5),
+                        const SizedBox(width: 2),
                         Text(
                           "${anime.score ?? "-"}",
                           style: const TextStyle(color: Colors.yellow),
@@ -98,7 +102,7 @@ class AnimeCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      anime.synopsis,
+                      anime.synopsis ?? "",
                       maxLines: 4,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(

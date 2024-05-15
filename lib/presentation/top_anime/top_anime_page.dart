@@ -3,16 +3,25 @@ import 'package:anime_explore/models/anime.dart';
 import 'package:anime_explore/models/paged_response.dart';
 import 'package:anime_explore/presentation/anime/anime_card.dart';
 import 'package:anime_explore/presentation/anime/anime_card_shimmer.dart';
+import 'package:anime_explore/utils/constants/colors.dart';
 import 'package:anime_explore/utils/constants/sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
-class TopAnimePage extends StatelessWidget {
-  final VoidCallback onSearch;
-  const TopAnimePage({super.key, required this.onSearch});
+class TopAnimePage extends StatefulWidget {
+  const TopAnimePage({super.key});
 
   @override
+  State<TopAnimePage> createState() => _TopAnimePageState();
+}
+
+class _TopAnimePageState extends State<TopAnimePage>
+    with AutomaticKeepAliveClientMixin {
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return BlocProvider(
       create: (context) => TopAnimeBloc()..add(TopAnimeCall()),
       child: Scaffold(
@@ -24,12 +33,6 @@ class TopAnimePage extends StatelessWidget {
               fontSize: TSizes.fontSizeXxl,
             ),
           ),
-          actions: [
-            IconButton(
-              onPressed: onSearch,
-              icon: const Icon(Icons.search),
-            ),
-          ],
         ),
         body: _body(),
       ),
@@ -76,10 +79,11 @@ class TopAnimePage extends StatelessWidget {
             const SizedBox(height: 10),
             Text(message),
             const SizedBox(height: 10),
-            ElevatedButton(
+            PlatformElevatedButton(
               onPressed: () {
                 context.read<TopAnimeBloc>().add(TopAnimeCall());
               },
+              color: Theme.of(context).primaryColor,
               child: const Text("Retry"),
             ),
           ],
@@ -102,4 +106,7 @@ class TopAnimePage extends StatelessWidget {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

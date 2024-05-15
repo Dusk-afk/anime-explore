@@ -22,7 +22,7 @@ class TSizes {
 
   // Button sizes
   static const double buttonHeight = 18.0;
-  static const double buttonRadius = 12.0;
+  static const double buttonRadius = 20.0;
   static const double buttonWidth = 120.0;
   static const double buttonElevation = 4.0;
 
@@ -51,6 +51,7 @@ class TSizes {
   static const double productItemHeight = 160.0;
 
   // Input field
+  static const double inputFieldHeight = 40.0;
   static const double inputFieldRadius = 12.0;
   static const double spaceBtwInputFields = 16.0;
 
