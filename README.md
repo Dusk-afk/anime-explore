@@ -19,7 +19,10 @@ Explore, discover, and immerse yourself in the vibrant world of anime with Anime
   <img src="./assets/screenshots/5.png" width="200" height="400" />
 </p>
 
-https://github.com/Dusk-afk/anime-explore/assets/83510709/1baa3a64-1e41-479a-ac7e-f3d436d2ac5d
+<!--https://github.com/Dusk-afk/anime-explore/assets/83510709/1baa3a64-1e41-479a-ac7e-f3d436d2ac5d-->
+https://github.com/Dusk-afk/anime-explore/assets/83510709/c1555d68-bcdf-4403-a270-d1088caebdd8
+
+
 
 
 ## Getting Started
